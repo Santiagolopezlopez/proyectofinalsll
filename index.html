@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Pacientes y Médicos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+     <!-- Incluir barra de navegación desde navbar.html -->
+     <div id="navbar"></div>
+
+     <script>
+         // Insertar el contenido de navbar.html en el elemento con id "navbar"
+         fetch('/navbar.html')
+             .then(response => response.text())
+             .then(data => {
+                 document.getElementById('navbar').innerHTML = data;
+             })
+             .catch(error => console.error('Error cargando el navbar:', error));
+ 
+         // Solicitar el tipo de usuario y ajustar el menú en función de este
+         fetch('/tipo-usuario')
+             .then(response => response.json())
+             .then(data => {
+                 const menu = document.getElementById('menu');
+                 const tipoUsuario = data.tipo_usuario;
+                 console.log(tipoUsuario);
+                 // Agregar opciones de menú según el tipo de usuario
+                 if (tipoUsuario === 'administrador') {
+                     menu.innerHTML += '<li><a href="/ver-usuarios">Ver Usuarios</a></li>';
+                     menu.innerHTML += '<li><a href="/ver-invitados">Ver invitados</a></li>';
+                     menu.innerHTML += '<li><a href="/pertenenciastotales">Pertenencias totales</a></li>';
+                     menu.innerHTML += '<li><a href="/busqueda.html">Buscar Usuarios</a></li>';
+                     menu.innerHTML += '<li><a href="/equipos.html">Instertar Equipos</a></li>';
+                 } else if (tipoUsuario === 'empleado') {
+                     menu.innerHTML += '<li><a href="/materiales">Ver Materiales</a></li>';
+                     menu.innerHTML += '<li><a href="/ordenar-materiales">Materiales ordenados</a></li>';
+                 } 
+                 // Opción de cerrar sesión para todos los tipos de usuario
+                 menu.innerHTML += '<li><a href="/logout">Cerrar Sesión</a></li>';
+             })
+             .catch(error => console.error('Error obteniendo el tipo de usuario:', error));
+     </script>
+  
+      <h1>Bienvenido a la Empresa Santiagoll</h1>
+      <p>Esta es una página básica para administrar maquinaria y datos de la empresa.</p>
+      <form action="/submit-data" method="POST">
+      <label for="name">Nombre del material:</label>
+      <input type="text" id="name" name="name">
+    
+        <label for="color">Color:</label>
+        <input type="text" id="color" name="color">
+  
+        <label for="estado">Estado del material:</label>
+        <input type="text" id="estado" name="estado">
+        
+        <label for="funcionalidad">Funcion del material</label>
+        <input type="text" id="funcionalidad" name="funcionalidad">
+       
+        <button type="submit">Guardar</button>
+        </form>
+        <h2>Registrar Invitado</h2>
+        <form action="/insertar-invitado" method="POST">
+        <label for="nombre">Nombre del invitado:</label>
+        <input type="text" id="nombre" name="nombre">
+
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido">
+
+        <label for="empresa">Empresa de procedencia:</label>
+        <input type="text" id="empresa" name="empresa">
+
+        <label for="motivo">Motivo de visita:</label>
+        <input type="text" id="motivo" name="motivo">
+
+        <button type="submit">Guardar Invitado</button>
+        </form>
+        <a href="/logout">Cerrar Sesión</a> 
+    </body>
+</html>
+
+
+   
